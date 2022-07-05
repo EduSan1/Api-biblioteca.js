@@ -2,15 +2,20 @@ import books from "../models/Book.js"
 
 class BooksController {
     static list = (req , res) => {
-        books.find(( err , books ) => {
+        books.find()
+        .populate("autor")
+        .exec(( err , books ) => {
             res.status(200).json(books)
           })
+     
     }
 
     static getById = (req , res) => {
         const id = req.params.id;
         
-        books.findById(id , (err , books) => {
+        books.findById(id)
+            .populate("autor", "nome")
+            .exec((err , books) => {
             if(!err) {
                 res.status(200).send(books)
             }else {
@@ -19,6 +24,19 @@ class BooksController {
         })
 
     }
+
+    static getByPublisher = (req , res) => {
+        const publisher = req.query.publisher;
+        console.log(publisher)
+        console.log(req.query)
+        
+        books.find({'editora' : publisher}, {} , (err, books) => {
+            res.status(200).send(books)
+        })
+
+    }
+
+    
 
     static create = (req , res) => {
         let book = new books(req.body);
