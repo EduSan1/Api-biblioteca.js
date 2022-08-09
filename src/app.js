@@ -6,10 +6,9 @@ import routes from "./routes.js";
 const app = express();
 
 app.use(express.json())
-
 routes(app)
 
-db.on("error", console.log.bind(console, "Erro de Conexão"))
+db.on("error", console.log.bind(console, "erro"))
 db.once("open" , () => {
   console.log("Conexão com banco feita com sucesso!!!")
 })
